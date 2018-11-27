@@ -18,7 +18,7 @@ int main(int argc, char** argv)
    glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
    glutInitWindowSize ((int)largura,(int)altura);
    glutInitWindowPosition (20,20);
-   glutCreateWindow ("Slide 2 Exercicio 3");
+   glutCreateWindow ("Slide 2 - Exercicio 3");
    init ();
    glutDisplayFunc(display);
    glutMainLoop();
