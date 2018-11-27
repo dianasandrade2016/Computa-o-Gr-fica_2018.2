@@ -95,7 +95,7 @@ void display(){
 
     for(i=0;i<circle_points;i++){
         angle = 2*PI*i/circle_points;
-        glVertex2f((cos(angle))*rd,(sin(angle))*rd);
+        glVertex2f((cos(angle))*0.03,(sin(angle))*0.03);
     }
     glEnd();
 
