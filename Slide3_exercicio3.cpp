@@ -85,19 +85,25 @@ void AlteraTamanhoJanela(GLsizei w, GLsizei h)
 void GerenciaMouse(int button, int state, int x, int y)
 {
     if (button == GLUT_LEFT_BUTTON){
+
          if (state == GLUT_DOWN) {
-                  // Troca a posição da peça, que vai do centro da
-                  // janela até a posição onde o usuário clicou com o mouse
-                 // while(state){
-                  if((posx >= 0 && posx <3) && (posy < 3 && posy >= 0)){
-                    r_x = ( (2 * ortho * x) / v_w) - ortho;
-                    r_y = ( ( (2 * ortho) * (y - v_h) ) / -v_h) - ortho;
-                    posx = r_x;
+
+            printf("%d\n",posx);
+            r_x = ( (2 * ortho * x) / v_w) - ortho;
+            r_y = ( ( (2 * ortho) * (y - v_h) ) / -v_h) - ortho;
+
+            if(r_x<=0 || r_y<0){
+
+            }else{
+                posx = r_x;
+                if(r_x<=0 || r_y<0){
+
+                }else{
                     posy = r_y;
-                    }
-                    else printf("Erro! Reiniciar!");
                 }
             }
+        }
+    }
 
     glutPostRedisplay();
 }
@@ -109,11 +115,10 @@ int main(int argc, char** argv)
      glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
      glutInitWindowSize(300,300);
      glutInitWindowPosition(100,100);
-     glutCreateWindow("teste");
+     glutCreateWindow("Slide 3 - Exercicio 3");
      glutDisplayFunc(Desenha);
      glutReshapeFunc(AlteraTamanhoJanela);
      glutMouseFunc(GerenciaMouse);
      Inicializa();
      glutMainLoop();
-
 }
