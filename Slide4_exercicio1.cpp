@@ -9,7 +9,7 @@ int selected = 1;
 
 void init(void)
 {
-	printf("Pressione as setas direita e esquerda para mover o braco.\n");
+	printf("Pressione as setas para cima e para baixo para mover o braco.\n");
 	printf("Selecione as teclas 1 e 2 ou 3 para escolher o segmento a ser movido.\n");
 	printf("Pressione ESC para sair.\n");
 
@@ -125,17 +125,19 @@ void specialKeys(int key, int x, int y)
 {
    switch(key)
    {
-      case GLUT_KEY_LEFT:
+       case GLUT_KEY_UP:
 			if(selected == 1) shoulder = ((int) shoulder + 5) % 360;
 			if(selected == 2) elbow = ((int) elbow + 5) % 360;
-            if(selected == 3) wrist = ((int) wrist + 5) % 360;
+           		if(selected == 3) wrist = ((int) wrist + 5) % 360;
       break;
-      case GLUT_KEY_RIGHT:
+      case GLUT_KEY_DOWN:
 			if(selected == 1) shoulder = ((int) shoulder - 5) % 360;
 			if(selected == 2) elbow = ((int) elbow - 5) % 360;
 			if(selected == 3) wrist = ((int) wrist - 5) % 360;
+
       break;
-   }
+
+    }
    glutPostRedisplay();
 }
 
@@ -145,7 +147,7 @@ int main(int argc, char** argv)
    glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
    glutInitWindowSize (800, 600);
    glutInitWindowPosition (100, 100);
-   glutCreateWindow (argv[0]);
+   glutCreateWindow ("Slide 4 - Exercicio 1");
    init ();
    glutDisplayFunc(display);
    glutReshapeFunc(reshape);
@@ -154,3 +156,4 @@ int main(int argc, char** argv)
    glutMainLoop();
    return 0;
 }
+ 
