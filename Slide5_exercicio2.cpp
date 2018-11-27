@@ -1,28 +1,39 @@
 #include <GL/glut.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include <math.h>
 
-int width  = 1000;
+int width  = 640;
 int height = 500;
-float rotationX = 0.0, rotationY = 0.0;
-int   last_x, last_y;
-float angle;
-float PI=3.141516,dy;
-float rd=0.2;
-float x=0.0,y=0.0,xt=0.0,yt=-0.8;
-
-int circle_points=7;
-
+int circle_points = 200;
+int p,q;
+int flag=0,level=1;
+int count=0;
 int i;
+float angle;
+
+float PI=3.141516;
+
+float rd=0.2;
+
+float x=-1.0, y=1.0, xt=0.0,yt=-0.8;
+
+double l,r,b,t;
+
+float m = 0.02f;
+float n = 0.007f;
+
+float tbxmax, tbxmin;
+float ballxmax, ballxmin, ballymax, ballymin;
+
+
 void initLight(int width, int height)
 {
    glEnable(GL_LIGHTING);                 // Habilita luz
    glEnable(GL_LIGHT0);                   // habilita luz 0
 
    // Cor da fonte de luz (RGBA)
-   GLfloat cor_luz[]     = { 1.0, 1.0, 1.0, 1.0};
+   GLfloat cor_luz[]     = { 1.0, 0.5452, 1.0, 1.0};
    // Posicao da fonte de luz. Ultimo parametro define se a luz sera direcional (0.0) ou tera uma posicional (1.0)
    GLfloat posicao_luz[] = { (float) width, (float)height, 1000.0, 1.0};
 
@@ -49,66 +60,117 @@ void setMaterial(void)
 }
 
 
-
-void init(void)
-{
-   glClearColor (1.0, 1.0, 1.0, 1.0);
-   glShadeModel (GL_SMOOTH);
-   glEnable(GL_DEPTH_TEST);               // Habilita Z-buffer
-   initLight(width, height);
+void init(){
+    glClearColor (1.0, 1.0, 1.0, 1.0);
+    glLoadIdentity();
+    glMatrixMode(GL_PROJECTION);
+    glShadeModel (GL_SMOOTH);
+    glEnable(GL_DEPTH_TEST);
+    initLight(width, height);
 }
 
-void display(void)
-{
-    float sphereSize = 30.0;
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+void idle() {
+    glutPostRedisplay();
+}
 
+void display(){
+
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode (GL_PROJECTION);
+
     glLoadIdentity ();
-	glOrtho(0.0, width, 0.0, height, -sphereSize, sphereSize);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity ();
 
-	setMaterial();
-	glTranslatef(60/2.0f,60/2.0f, 0.0); // Posicionamento inicial da esfera
-	glPushMatrix();
-    glutSolidSphere(5.0, 100, 100);
-    glPopMatrix();
-
-
     glPushMatrix();
-    glTranslatef(x, y, 0.0);
-    glTranslatef(10.0f, 10.0f, 0.0);
+
+    setMaterial();
+
+    glTranslatef(x, y, 0.00);
+
     glBegin(GL_POLYGON);
+    int i;
+    float angle;
 
-    glColor3f(1.0,1.0,0.0);
 
-    for(i=0;i<circle_points;i++)
-    {
-        angle=2*PI*i/circle_points;
+    for(i=0;i<circle_points;i++){
+        angle = 2*PI*i/circle_points;
         glVertex2f((cos(angle))*rd,(sin(angle))*rd);
     }
-
     glEnd();
+
     glPopMatrix();
+
     glutSwapBuffers();
+
+    if(x > ballxmax){ x=ballxmax; m=-m;}
+
+    else if(x < ballxmin){ x=ballxmin; m=-m;}
+
+    if(y > ballymax){ y=ballymax; n=-n;}
+
+    else if(y < ballymin){ y=ballxmin; n=-n;}
+
+    float f;
+
+    float a1,b1,a2,b2;
+    a1 = abs(abs(xt)-abs(x));
+    b1 = abs(abs(yt)-abs(y));
+    a2 = pow(a1,2);
+    b2 = pow(b1,2);
+    f = sqrt(a2+b2);
+
+    if(f <= 0.424264068 && y<=-0.5 && y>=-0.7){
+        n =-1.002*n;
+        count++;
+        if(count==15) {
+            count=0;
+            level++;
+            m = 5 * m; //incr the speed of ball in x-axis
+            n = 50 * n; //incr the speed of ball in y-axis
+            }
+        }
+        if((y <-0.55 && f < 0.5831 && f > 0.5)){ x = x; y = y; m = 0; n = 0; flag=1;}
+        else{
+        if(y <= -0.6){ x = x; y = y; m = 0; n = 0; flag = 1;}
+        else {
+            p = xt -0.3;//esquerda
+            q = xt +0.3;//direita
+            x = x + m;//x
+            y = y + n;//y
+        }
+        }
 }
 
-void reshape (int w, int h)
-{
-   width = w;
-   height = h;
-   glViewport (0, 0, (GLsizei) w, (GLsizei) h);
-}
+void reshape (int w, int h){
+    width = w;
+    height = h;
+    glViewport (0, 0, (GLsizei) w, (GLsizei) h);
+    float aspect = (GLfloat)width / (GLfloat)height;
 
-void keyboard (unsigned char key, int x, int y)
-{
-   if(tolower(key) == 27) exit(0);
-}
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
 
-void motion(int x, int y )
-{
-   glutPostRedisplay();
+    if (width >= height) {
+    l = -1.0*aspect;
+    r = 1.0*aspect;
+    b = -1.0;
+    t = 1.0;
+
+    }else {
+
+    l = -1.0;
+    r = 1.0;
+    b = -1.0/aspect;
+    t = 1.0/aspect;
+    }
+    glOrtho(l,r,b,t, -1, 1);
+    ballxmax = r-(rd);
+    ballxmin = l+(rd);
+    ballymax = t-(rd)-0.1;
+    ballymin = b+(rd);
+    tbxmax = r-(0.3);
+    tbxmin = l+(0.3);
 }
 
 int main(int argc, char** argv)
@@ -118,11 +180,10 @@ int main(int argc, char** argv)
    glutInitWindowSize (width, height);
    glutInitWindowPosition (100, 100);
    glutCreateWindow("Slide 6 - Exercicio1 - Boucing Ball");
-   init ();
-   glutDisplayFunc(display);
    glutReshapeFunc(reshape);
-   glutMotionFunc( motion );
-   glutKeyboardFunc(keyboard);
+   glutDisplayFunc(display);
+   glutIdleFunc(idle);
+   init ();
    glutMainLoop();
    return 0;
 }
