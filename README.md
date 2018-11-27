@@ -1,1 +1,1 @@
-# Computa-o-Gr-fica_2018.2
+# ComputacaoGrafica_2018.2
