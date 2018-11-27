@@ -192,8 +192,8 @@ void specialKeys(int key, int x, int y)
        case GLUT_KEY_UP:
 			if(selected == 1) shoulder = ((int) shoulder + 5) % 360;
 			if(selected == 2) elbow = ((int) elbow + 5) % 360;
-            if(selected == 3) wrist = ((int) wrist + 5) % 360;
-            if(selected == 4) grip = ((int) grip -5) % 110; grip1 = ((int) grip1 +5) % 110;
+           		if(selected == 3) wrist = ((int) wrist + 5) % 360;
+           		if(selected == 4) grip = ((int) grip -5) % 110; grip1 = ((int) grip1 +5) % 110;
       break;
       case GLUT_KEY_DOWN:
 			if(selected == 1) shoulder = ((int) shoulder - 5) % 360;
