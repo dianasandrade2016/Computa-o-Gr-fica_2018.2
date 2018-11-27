@@ -140,7 +140,7 @@ int main(int argc, char** argv)
    glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
    glutInitWindowSize ((int)largura,(int)altura);
    glutInitWindowPosition (300,300);
-   glutCreateWindow ("Slide 2 Exercicio 1");
+   glutCreateWindow ("Slide 2 - Exercicio 1");
 
    glutDisplayFunc(display);
    init();
