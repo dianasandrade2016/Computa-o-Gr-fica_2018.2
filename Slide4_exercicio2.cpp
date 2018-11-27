@@ -9,7 +9,7 @@ int selected = 1;
 
 void init(void)
 {
-	printf("Pressione as setas direita e esquerda para mover o braco.\n");
+	printf("Pressione as setas para cima e para baixo para mover o braco.\n");
 	printf("Selecione as teclas 1, 2, 3 para escolher o segmento a ser movido.\n");
     printf("Selecione as teclas 4 e 5  para mover a garra.\n");
 
@@ -154,7 +154,7 @@ void reshape (int w, int h)
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity ();
    gluLookAt (6.0, 6.0, 6.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-    //gluLookAt (9.0, 6.0, 6.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+//gluLookAt (9.0, 6.0, 6.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 }
 
 void keyboard (unsigned char key, int x, int y)
@@ -193,8 +193,7 @@ void specialKeys(int key, int x, int y)
 			if(selected == 1) shoulder = ((int) shoulder + 5) % 360;
 			if(selected == 2) elbow = ((int) elbow + 5) % 360;
             if(selected == 3) wrist = ((int) wrist + 5) % 360;
-            if(selected == 4) grip = ((int) grip - 5) % 360; grip1 = ((int) grip1 +5) % 360;
-
+            if(selected == 4) grip = ((int) grip -5) % 110; grip1 = ((int) grip1 +5) % 110;
       break;
       case GLUT_KEY_DOWN:
 			if(selected == 1) shoulder = ((int) shoulder - 5) % 360;
@@ -212,7 +211,8 @@ int main(int argc, char** argv)
    glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
    glutInitWindowSize (800, 400);
    glutInitWindowPosition (100, 100);
-   glutCreateWindow (argv[0]);
+   //glutCreateWindow (argv[0]);
+   glutCreateWindow ("Slide 4 - Exercicio 2");
    init ();
    glutDisplayFunc(display);
    glutReshapeFunc(reshape);
